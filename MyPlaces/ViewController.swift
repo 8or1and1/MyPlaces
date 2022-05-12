@@ -33,4 +33,5 @@ class ViewController: UITableViewController {
 		cell.typeLabel.text = places[indexPath.row].type
 		return cell
 	}
+	@IBAction func cancelAction(_ segue: UIStoryboardSegue){}
 }
