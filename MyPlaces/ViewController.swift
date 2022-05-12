@@ -27,17 +27,31 @@ class ViewController: UITableViewController {
 		return restaurantNames.count
 	}
 	
-	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-		return 60
-	}
+	
 	
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+		var squareSize = Double(self.tableView(self.tableView, heightForRowAt: indexPath))
 		var content = cell.defaultContentConfiguration()
 		content.text = restaurantNames[indexPath.row]
-		content.image = UIImage(named: restaurantNames[indexPath.row])
+		var restaurantImage = UIImage(named: restaurantNames[indexPath.row])!
+		restaurantImage = restaurantImage.imageResized(to: CGSize(width: squareSize, height: squareSize))
+		
+		content.image = restaurantImage
+		content.imageProperties.cornerRadius = squareSize/2
 		cell.contentConfiguration = content
 		return cell
 	}
+	// MARK: -- table view delegate
+	override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+		return 85
+	}
 }
 
+extension UIImage {
+	func imageResized(to size: CGSize) -> UIImage {
+		return UIGraphicsImageRenderer(size: size).image { _ in
+			draw(in: CGRect(origin: .zero, size: size))
+		}
+	}
+}
